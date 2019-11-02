@@ -1,0 +1,8 @@
+objectToPathConverter script MUST be run in command prompt in order to work. Will not work in git bash.
+
+The CSV file containing the orders must only contain the relevant columns for the bricks. Breaks if there are new lines (like with the address column)
+
+Mason requirements:
+- Node version 10
+- Inkscape for Windows
+- .NETFramework 4.5.2?
