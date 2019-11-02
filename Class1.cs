@@ -20,7 +20,8 @@ namespace Mason
         public string LyricLine4 { get; set; }
         public int BrickEditionNumber { get; set; }
 
-        private static double TextHeight = 0.222;
+        //private static double TextHeight = 0.222;
+        private static double TextHeight = 0.16;
 
         public BrickInscription(string artistName, string country, string lyricLine1, string lyricLine2, string lyricLine3, string lyricLine4, string donorName, int brickEditionNumber)
         {
@@ -67,7 +68,7 @@ namespace Mason
 
                     inscriptions.Add(inscription);
 
-                    Console.WriteLine(inscription.ToString());
+                    brickEditionNumber++;
                 }
             }
 
@@ -80,14 +81,14 @@ namespace Mason
             {
                 List<EntityObject> entities = new List<EntityObject>();
 
-                MText donorName = BrickInscription.CreateMTextAtPosition(inscription.DonorName, 0.0, 0.0);
-                MText lylric1 = BrickInscription.CreateMTextAtPosition(inscription.LyricLine1, 0.0, 4.0);
-                MText lylric2 = BrickInscription.CreateMTextAtPosition(inscription.LyricLine2, 0.0, 3.0);
-                MText lylric3 = BrickInscription.CreateMTextAtPosition(inscription.LyricLine3, 0.0, 2.0);
-                MText lylric4 = BrickInscription.CreateMTextAtPosition(inscription.LyricLine4, 0.0, 1.0);
-                MText artistName = BrickInscription.CreateMTextAtPosition(inscription.ArtistName, 5.0, 0.0);
-                MText country = BrickInscription.CreateMTextAtPosition(inscription.Country, 5.0, 1.0);
-                MText brickEditionNumber = BrickInscription.CreateMTextAtPosition("#" + inscription.BrickEditionNumber.ToString(), 7.0, 4.0);
+                MText donorName = BrickInscription.CreateMTextAtPosition(inscription.DonorName, 0.33, .70);
+                MText lylric1 = BrickInscription.CreateMTextAtPosition(inscription.LyricLine1, 0.35, 3.85);
+                MText lylric2 = BrickInscription.CreateMTextAtPosition(inscription.LyricLine2, 0.35, 3.34);
+                MText lylric3 = BrickInscription.CreateMTextAtPosition(inscription.LyricLine3, 0.35, 2.82);
+                MText lylric4 = BrickInscription.CreateMTextAtPosition(inscription.LyricLine4, 0.35, 2.30);
+                MText artistName = BrickInscription.CreateMTextAtPosition(inscription.ArtistName, 3.8, 1.6);
+                MText country = BrickInscription.CreateMTextAtPosition(inscription.Country, 3.7, 0.70);
+                MText brickEditionNumber = BrickInscription.CreateMTextAtPosition("#" + inscription.BrickEditionNumber.ToString(), 5.7, 4.15, 0.14);
 
                 entities.Add(donorName);
                 entities.Add(lylric1);
@@ -103,11 +104,11 @@ namespace Mason
             }
         }
 
-        public static MText CreateMTextAtPosition(string textContent, double x, double y)
+        public static MText CreateMTextAtPosition(string textContent, double x, double y, double textHeight = 0.16)
         {
             TextStyle style = new TextStyle("Another Typewriter.ttf");
 
-            MText text = new MText(new Vector2(x, y), BrickInscription.TextHeight, 0, style);
+            MText text = new MText(new Vector2(x, y), textHeight, 0, style);
             text.Value = textContent;
 
             return text;
