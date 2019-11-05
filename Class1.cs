@@ -81,14 +81,16 @@ namespace Mason
             {
                 List<EntityObject> entities = new List<EntityObject>();
 
-                MText donorName = BrickInscription.CreateMTextAtPosition(inscription.DonorName, 0.33, .70);
-                MText lylric1 = BrickInscription.CreateMTextAtPosition(inscription.LyricLine1, 0.35, 3.85);
-                MText lylric2 = BrickInscription.CreateMTextAtPosition(inscription.LyricLine2, 0.35, 3.34);
-                MText lylric3 = BrickInscription.CreateMTextAtPosition(inscription.LyricLine3, 0.35, 2.82);
-                MText lylric4 = BrickInscription.CreateMTextAtPosition(inscription.LyricLine4, 0.35, 2.30);
-                MText artistName = BrickInscription.CreateMTextAtPosition(inscription.ArtistName, 3.8, 1.6);
-                MText country = BrickInscription.CreateMTextAtPosition(inscription.Country, 3.7, 0.70);
-                MText brickEditionNumber = BrickInscription.CreateMTextAtPosition("#" + inscription.BrickEditionNumber.ToString(), 5.7, 4.15, 0.14);
+                MText donorName = BrickInscription.CreateMTextAtPosition(inscription.DonorName, 0.41, 0.45);
+                MText lylric1 = BrickInscription.CreateMTextAtPosition(inscription.LyricLine1, 0.41, 3.01);
+                MText lylric2 = BrickInscription.CreateMTextAtPosition(inscription.LyricLine2, 0.41, 2.61);
+                MText lylric3 = BrickInscription.CreateMTextAtPosition(inscription.LyricLine3, 0.41, 2.20);
+                MText lylric4 = BrickInscription.CreateMTextAtPosition(inscription.LyricLine4, 0.41, 1.79);
+                MText artistName = BrickInscription.CreateMTextAtPosition(inscription.ArtistName, 3.12, 1.14);
+                Text country = BrickInscription.CreateTextAtPosition(inscription.Country, 5.13, 0.45);
+                country.Alignment = TextAlignment.BaselineRight;
+                Text brickEditionNumber = BrickInscription.CreateTextAtPosition("#" + inscription.BrickEditionNumber.ToString(), 5.23, 3.22, 0.16557);
+                brickEditionNumber.Alignment = TextAlignment.BaselineRight;
 
                 entities.Add(donorName);
                 entities.Add(lylric1);
@@ -104,12 +106,20 @@ namespace Mason
             }
         }
 
-        public static MText CreateMTextAtPosition(string textContent, double x, double y, double textHeight = 0.16)
+        public static MText CreateMTextAtPosition(string textContent, double x, double y, double textHeight = 0.18027)
         {
             TextStyle style = new TextStyle("Another Typewriter.ttf");
 
             MText text = new MText(new Vector2(x, y), textHeight, 0, style);
             text.Value = textContent;
+
+            return text;
+        }
+        public static Text CreateTextAtPosition(string textContent, double x, double y, double textHeight = 0.18027)
+        {
+            TextStyle style = new TextStyle("Another Typewriter.ttf");
+
+            Text text = new Text(textContent, new Vector2(x, y), textHeight, style);
 
             return text;
         }
@@ -123,7 +133,13 @@ namespace Mason
                 dxf.AddEntity(entity);
             }
 
-            dxf.Save(docName);
+            string generatedDXFDir = "generatedDXF/";
+            if (!System.IO.Directory.Exists(generatedDXFDir))
+            {
+                System.IO.Directory.CreateDirectory(generatedDXFDir);
+            }
+
+            dxf.Save(generatedDXFDir + docName);
         }
 
         private static int GetIndexOfArtistNameInHeaderRow(string[] headerRow)
