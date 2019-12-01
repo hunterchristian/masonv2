@@ -29,7 +29,7 @@ namespace Mason
             List<BrickInscription> inscriptions = BrickInscription.ParseBrickInscriptionsFromCSV(csvFilePath, brickEditionNumber);
             BrickInscription.PrintInscriptionsToDXFFile(inscriptions);
 
-            MessageBox.Show("Brick inscription generation complete. You can find the brick inscriptions in the following folder: " + System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\generatedDXF", "Mason");
+            MessageBox.Show("Brick inscription generation complete. You can find the brick inscriptions in the following folder: " + Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\generatedDXF", "Mason");
 
             return 0;
         }
@@ -66,7 +66,6 @@ namespace Mason
             prompt.Controls.Add(confirmation);
             prompt.Controls.Add(textLabel);
             prompt.AcceptButton = confirmation;
-
             if (prompt.ShowDialog() == DialogResult.OK)
             {
                 return Int32.Parse(textBox.Text);
