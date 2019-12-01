@@ -6,6 +6,8 @@ using netDxf;
 using netDxf.Entities;
 using netDxf.Header;
 using netDxf.Tables;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace Mason
 {
@@ -19,9 +21,6 @@ namespace Mason
         public string LyricLine3 { get; set; }
         public string LyricLine4 { get; set; }
         public int BrickEditionNumber { get; set; }
-
-        //private static double TextHeight = 0.222;
-        private static double TextHeight = 0.16;
 
         public BrickInscription(string artistName, string country, string lyricLine1, string lyricLine2, string lyricLine3, string lyricLine4, string donorName, int brickEditionNumber)
         {
@@ -79,6 +78,11 @@ namespace Mason
         {
             foreach (BrickInscription inscription in inscriptions)
             {
+                string brickEditionNumberStr = "#" + inscription.BrickEditionNumber.ToString();
+
+                double brickEditionNumberWidthInInches = BrickInscription.GetTextWidthInInches(brickEditionNumberStr, 0.16557F);
+                double countryWidthInInches = BrickInscription.GetTextWidthInInches(inscription.Country);
+
                 List<EntityObject> entities = new List<EntityObject>();
 
                 MText donorName = BrickInscription.CreateMTextAtPosition(inscription.DonorName, 0.41, 0.45);
@@ -87,9 +91,9 @@ namespace Mason
                 MText lylric3 = BrickInscription.CreateMTextAtPosition(inscription.LyricLine3, 0.41, 2.20);
                 MText lylric4 = BrickInscription.CreateMTextAtPosition(inscription.LyricLine4, 0.41, 1.79);
                 MText artistName = BrickInscription.CreateMTextAtPosition(inscription.ArtistName, 3.12, 1.14);
-                Text country = BrickInscription.CreateTextAtPosition(inscription.Country, 5.13, 0.45);
+                Text country = BrickInscription.CreateTextAtPosition(inscription.Country, 5.13 - countryWidthInInches, 0.45);
                 country.Alignment = TextAlignment.BaselineRight;
-                Text brickEditionNumber = BrickInscription.CreateTextAtPosition("#" + inscription.BrickEditionNumber.ToString(), 5.23, 3.22, 0.16557);
+                Text brickEditionNumber = BrickInscription.CreateTextAtPosition(brickEditionNumberStr, 5.23 - brickEditionNumberWidthInInches, 3.22, 0.16557);
                 brickEditionNumber.Alignment = TextAlignment.BaselineRight;
 
                 entities.Add(donorName);
@@ -104,6 +108,24 @@ namespace Mason
                 string docName = BrickInscription.GenerateFileNameFromInscription(inscription);
                 BrickInscription.CreateDXFDocumentWithEntities(docName, entities);
             }
+        }
+
+        public static double GetTextWidthInInches(string textContent, float textHeight = 0.18027f)
+        {
+            double PIXELS_PER_INCH = 106.78;
+
+            FontFamily fontFamily = new FontFamily("Another Typewriter");
+            Font font = new Font(
+               fontFamily,
+               textHeight,
+               System.Drawing.FontStyle.Regular,
+               GraphicsUnit.Inch
+            );
+
+            Size textSize = TextRenderer.MeasureText(textContent, font);
+            double widthInInches = textSize.Width / PIXELS_PER_INCH;
+
+            return widthInInches;
         }
 
         public static MText CreateMTextAtPosition(string textContent, double x, double y, double textHeight = 0.18027)
@@ -133,7 +155,7 @@ namespace Mason
                 dxf.AddEntity(entity);
             }
 
-            string generatedDXFDir = "generatedDXF/";
+            string generatedDXFDir = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "/generatedDXF/";
             if (!System.IO.Directory.Exists(generatedDXFDir))
             {
                 System.IO.Directory.CreateDirectory(generatedDXFDir);
