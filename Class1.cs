@@ -171,7 +171,7 @@ namespace Mason
 
         private static string GenerateFileNameFromInscription(BrickInscription inscription)
         {
-            return inscription.DonorName + "_" + inscription.ArtistName + "_" + DateTime.Now.ToString("MM-dd-yyyy-h-mmtt") + new Random().Next().ToString() + ".dxf";
+            return "#" + inscription.BrickEditionNumber.ToString() + "_" + inscription.DonorName + "_" + inscription.ArtistName + "_" + DateTime.Now.ToString("MM-dd-yyyy-h-mmtt") + new Random().Next().ToString() + ".dxf";
         }
     }
 
